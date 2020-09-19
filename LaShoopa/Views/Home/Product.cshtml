@@ -1,0 +1,78 @@
+﻿@model LaShoopa.ViewModels.ProductViewModel
+
+<!-- Product Details -->
+<section class="product__details">
+    <div class="container">
+        <div class="details__inner">
+            <div class="prod__item">
+                <div class="prod__slider" id="prod__slider">
+                    @foreach (var item in Model.ImgUrls)
+                    {
+                        <div class="slick__item">
+                            <img src="/@item"
+                                 alt=""
+                                 class="slick__img" />
+                        </div>
+                    }
+                </div>
+                <div class="prod__about">
+                    <a asp-controller="Home" asp-action="Clothes" asp-route-brandId="@Model.Product.BrandId" class="about__brand__link">@Model.Product.Brand.Name</a>
+                    <h2 class="about__name">@Model.Product.Name</h2>
+                    <div class="about__price">@Model.Product.Price грн</div>
+                    <form action="/" class="about__form">
+                        <h3 class="about__form__head">Размер производителя</h3>
+                        @for (int i = 0; i < Model.Sizes.Length; i++)
+                        {
+                            <div class="form_radio_btn">
+                                <input id="radio-@(i + 1)"
+                                       type="radio"
+                                       name="radio"
+                                       value="@Model.Sizes[i]"
+                                       checked />
+                                <label for="radio-@(i+1)">@Model.Sizes[i]</label>
+                            </div>
+                        }
+
+
+                        <button type="submit" class="about__form__btn">
+                            <i class="fa fa-shopping-cart" aria-hidden="true">
+                                Добавить в корзину
+                            </i>
+                        </button>
+                    </form>
+                </div>
+                <!-- /.prod__about -->
+            </div>
+            <!-- /.prod__slider -->
+            <div class="prod__desc">
+                <div class="desc__values">
+                    <div class="desc__item">
+                        <span class="desc__item__span">Brand:</span> @Model.Product.Brand.Name
+                    </div>
+                    <div class="desc__item">
+                        <span class="desc__item__span">Country:</span> @Model.Product.Country
+                    </div>
+                    <div class="desc__item">
+                        <span class="desc__item__span">Сomposition:</span> @Model.Product.Composition
+                    </div>
+                    <div class="desc__item">
+                        <span class="desc__item__span">Category:</span> @Model.Product.Category.Name
+                    </div>
+                    <div class="desc__item">
+                        <span class="desc__item__span">Gender:</span> @Model.Product.Gender.Name
+                    </div>
+                </div>
+                <div class="desc__text">
+                    @Model.Product.Description
+                </div>
+            </div>
+            <!-- /.prod__desc -->
+        </div>
+        <!-- /.details__inner -->
+    </div>
+    <!-- /.container -->
+</section>
+<!-- /.product__details -->
+<!-- Javascript -->
+<script src="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
+<script src="/js/product.js"></script>

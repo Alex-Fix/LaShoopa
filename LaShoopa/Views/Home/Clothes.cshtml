@@ -1,0 +1,64 @@
+﻿@model LaShoopa.ViewModels.ClothesViewModel
+<!-- Clothes Section -->
+<section class="clothes__section">
+    <div class="container">
+        <div class="clothes__section__inner">
+            @if (Model.FillCat != null)
+            {
+                <h2 class="clothes__head">
+                    @Model.FillCat.Name: <span class="clothes__head__count">@Model.Categories[Model.FillCat]</span>
+                </h2>
+            }
+            else
+            {
+                <h2 class="clothes__head">
+                    All Categories: <span class="clothes__head__count">@Model.countOfProducts</span>
+                </h2>
+            }
+        <div class="clothes__filters" id="filters">
+            <a asp-controller="Home" asp-action="Clothes" asp-route-genderId="@Model.genderId" asp-route-brandId="@Model.brandId" class="filter__link">All Categories:<span class="clothes__count">@Model.countOfProducts</span></a>
+            @foreach (var item in Model.Categories)
+            {
+                <a asp-controller="Home" asp-action="Clothes" asp-route-categoryId="@item.Key.Id" asp-route-genderId="@Model.genderId" asp-route-brandId="@Model.brandId" class="filter__link">@item.Key.Name<span class="clothes__count">@item.Value</span></a>
+            }
+
+        </div>
+            <!--/.clothes__filters-->
+            <div class="clothes__items">
+                @foreach (var item in Model.Products)
+                {
+                    <div class="product__item clothes">
+                        <img src="/@item.ImgUrls.Split(",").FirstOrDefault().Replace("[", "").Replace("\"", "").Replace("]", "")" alt="" class="product__img" />
+                        <div class="product__desc">
+                            <div class="product__name">@item.Name</div>
+                            <div class="product__price">
+                                ₴@item.Price<sup class="product__supprice">.00</sup>
+                            </div>
+                            <div class="product__btns">
+                                <a asp-controller="Home" asp-action="Product" asp-route-id="@item.Id" class="product__link">Details</a>
+                                <form action="/" class="product__form">
+                                    <button type="submit" class="product__btn">
+                                        Add to cart
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+            <!--/.clothes__items-->
+            <nav class="pages">
+                @for (int i = 1; i <= Model.CountOfPages; i++)
+                {
+                    <a asp-controller="Home" asp-action="Clothes" asp-route-categoryId="@Model.categoryId" asp-route-genderId="@Model.genderId" asp-route-brandId="@Model.brandId" asp-route-pageId="@i" class="page__link">@i</a>
+                }
+            </nav>
+            <!--/.pages-->
+        </div>
+        <!--/.clothes__inner-->
+    </div>
+    <!--/.container-->
+</section>
+<!--/.clothes__section-->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-ajax-unobtrusive/3.2.6/jquery.unobtrusive-ajax.min.js"></script>
+<script src="/js/clothes.js"></script>

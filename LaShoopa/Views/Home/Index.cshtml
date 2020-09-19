@@ -1,0 +1,114 @@
+﻿@model LaShoopa.ViewModels.IndexViewModel
+<!-- Intro -->
+
+<section class="intro" id="intro">
+    <img src="/@Model.IntroBackground"
+         alt=""
+         class="intro__img" />
+    <div class="container">
+        <div class="intro__content">
+            <h1 class="intro__title">New season arrivals.</h1>
+            <h2 class="intro__subtitle">Check out all the new trends</h2>
+            <a href="#" class="intro__link" data-scroll="#popular__products">Show now</a>
+        </div>
+    </div>
+    <!-- /.container -->
+</section>
+<!-- /.intro -->
+<!-- Latest products -->
+<section class="lates__products">
+    <div class="container">
+        <div class="products">
+            <div class="products__title">
+                <h2 class="products__title__text">Latest products</h2>
+            </div>
+            <div class="product__items">
+                @foreach (var item in Model.LatestProducts)
+                {
+                <div class="product__item">
+                    <img src="@item.ImgUrls.Split(",").FirstOrDefault().Replace("[", "").Replace("\"", "").Replace("]", "")"
+                         alt=""
+                         class="product__img" />
+                    <div class="product__desc">
+                        <div class="product__name">@item.Name</div>
+                        <div class="product__price">
+                            ₴@item.Price.ToString()<sup class="product__supprice">.00</sup>
+                        </div>
+                        <div class="product__btns">
+                            <a asp-action="Product" asp-controller="Home" asp-route-id="@item.Id" class="product__link">Details</a>
+                            <form action="/" class="product__form">
+                                <button type="submit" class="product__btn">
+                                    Add to cart
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                }
+            </div>
+            <!-- products__items -->
+        </div>
+        <!-- /.products -->
+    </div>
+    <!-- /.container -->
+</section>
+<!-- /.latest__products -->
+<!-- Popular products -->
+<section class="popular__products" id="popular__products">
+    <div class="container">
+        <div class="products">
+            <div class="products__title">
+                <h2 class="products__title__text">Popular products</h2>
+            </div>
+            <div class="product__items">
+                @foreach (var item in Model.PopularProducts)
+                {
+                    <div class="product__item">
+                        <img src="@item.ImgUrls.Split(",").FirstOrDefault().Replace("[", "").Replace("\"", "").Replace("]", "")"
+                             alt=""
+                             class="product__img" />
+                        <div class="product__desc">
+                            <div class="product__name">@item.Name</div>
+                            <div class="product__price">
+                                ₴@item.Price.ToString()<sup class="product__supprice">.00</sup>
+                            </div>
+                            <div class="product__btns">
+                                <a asp-action="Product" asp-controller="Home" asp-route-id="@item.Id" class="product__link">Details</a>
+                                <form action="/" class="product__form">
+                                    <button type="submit" class="product__btn">
+                                        Add to cart
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                }
+
+            </div>
+            <!-- products__items -->
+        </div>
+        <!-- /.products -->
+    </div>
+    <!-- /.container -->
+</section>
+<!-- /.Popular__products -->
+<!-- Brands -->
+<div class="brands">
+    <div class="container">
+        <div class="brands__items">
+            @foreach (var item in Model.Brands)
+            {
+                <div class="brands__item">
+                    <a asp-controller="Home" asp-action="Clothes" asp-route-brandId="@item.Id" class="brands__link">
+                        <img src="@item.ImgUrl" alt="" class="brands__img" />
+                    </a>
+                </div>
+            }
+
+        </div>
+        <!-- /.brands__items -->
+    </div>
+    <!-- /.container -->
+</div>
+<!-- /.brands -->
+<script src="~/js/index.js"></script>
