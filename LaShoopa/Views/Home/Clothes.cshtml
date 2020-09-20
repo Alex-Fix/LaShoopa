@@ -28,7 +28,7 @@
                 @foreach (var item in Model.Products)
                 {
                     <div class="product__item clothes">
-                        <img src="/@item.ImgUrls.Split(",").FirstOrDefault().Replace("[", "").Replace("\"", "").Replace("]", "")" alt="" class="product__img" />
+                        <img src="/@Model.ImgUrls[item.Id]" alt="" class="product__img" />
                         <div class="product__desc">
                             <div class="product__name">@item.Name</div>
                             <div class="product__price">
@@ -36,11 +36,7 @@
                             </div>
                             <div class="product__btns">
                                 <a asp-controller="Home" asp-action="Product" asp-route-id="@item.Id" class="product__link">Details</a>
-                                <form action="/" class="product__form">
-                                    <button type="submit" class="product__btn">
-                                        Add to cart
-                                    </button>
-                                </form>
+                                <a href="#" data-id="@item.Id" class="product__btn">Add to cart</a>
                             </div>
                         </div>
                     </div>

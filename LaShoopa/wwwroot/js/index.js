@@ -1,4 +1,9 @@
 $(function () {
+
+    
+
+
+
   function checkScroll(scrollPos, introH) {
     if (scrollPos > introH) {
       header.addClass("fixed");
@@ -40,4 +45,9 @@ $(function () {
       750
     );
   });
+
+
+    
+
+
 });

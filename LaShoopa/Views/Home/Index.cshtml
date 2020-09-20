@@ -25,25 +25,22 @@
             <div class="product__items">
                 @foreach (var item in Model.LatestProducts)
                 {
-                <div class="product__item">
-                    <img src="@item.ImgUrls.Split(",").FirstOrDefault().Replace("[", "").Replace("\"", "").Replace("]", "")"
-                         alt=""
-                         class="product__img" />
-                    <div class="product__desc">
-                        <div class="product__name">@item.Name</div>
-                        <div class="product__price">
-                            ₴@item.Price.ToString()<sup class="product__supprice">.00</sup>
-                        </div>
-                        <div class="product__btns">
-                            <a asp-action="Product" asp-controller="Home" asp-route-id="@item.Id" class="product__link">Details</a>
-                            <form action="/" class="product__form">
-                                <button type="submit" class="product__btn">
-                                    Add to cart
-                                </button>
-                            </form>
+                    <div class="product__item">
+                        <img src="/@Model.ImgUrls[item.Id]"
+                             alt=""
+                             class="product__img" />
+                        <div class="product__desc">
+                            <div class="product__name">@item.Name</div>
+                            <div class="product__price">
+                                ₴@item.Price.ToString()<sup class="product__supprice">.00</sup>
+                            </div>
+                            <div class="product__btns">
+                                <a asp-action="Product" asp-controller="Home" asp-route-id="@item.Id" class="product__link">Details</a>
+                                <a href="#" data-id="@item.Id" class="product__btn">Add to cart</a>
+
+                            </div>
                         </div>
                     </div>
-                </div>
                 }
             </div>
             <!-- products__items -->
@@ -64,7 +61,7 @@
                 @foreach (var item in Model.PopularProducts)
                 {
                     <div class="product__item">
-                        <img src="@item.ImgUrls.Split(",").FirstOrDefault().Replace("[", "").Replace("\"", "").Replace("]", "")"
+                        <img src="/@Model.ImgUrls[item.Id]"
                              alt=""
                              class="product__img" />
                         <div class="product__desc">
@@ -74,11 +71,7 @@
                             </div>
                             <div class="product__btns">
                                 <a asp-action="Product" asp-controller="Home" asp-route-id="@item.Id" class="product__link">Details</a>
-                                <form action="/" class="product__form">
-                                    <button type="submit" class="product__btn">
-                                        Add to cart
-                                    </button>
-                                </form>
+                                <a href="#" data-id="@item.Id" class="product__btn">Add to cart</a>
                             </div>
                         </div>
                     </div>
@@ -111,4 +104,5 @@
     <!-- /.container -->
 </div>
 <!-- /.brands -->
+
 <script src="~/js/index.js"></script>

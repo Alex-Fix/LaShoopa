@@ -10,6 +10,7 @@ namespace LaShoopa.ViewModels
     {
         public List<Product> Products { get; set; }
         public Dictionary<Category, int> Categories { get; set; }
+        public Dictionary<int , string> ImgUrls { get; set; }
         public int CountOfPages { get; set; }
         public Category FillCat { get; set; }
         public int countOfProducts { get; set; }

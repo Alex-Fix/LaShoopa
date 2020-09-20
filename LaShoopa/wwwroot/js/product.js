@@ -8,4 +8,11 @@ $(function () {
     arrows: false,
     dots: true,
   });
+
+    let radio = $("#radio-1");
+    if (radio.length) {
+        radio.attr("checked", "checked");
+    }
+
+
 });

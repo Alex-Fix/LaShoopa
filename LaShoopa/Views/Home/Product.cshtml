@@ -27,18 +27,14 @@
                                 <input id="radio-@(i + 1)"
                                        type="radio"
                                        name="radio"
-                                       value="@Model.Sizes[i]"
-                                       checked />
+                                       value="@Model.Sizes[i]" />
                                 <label for="radio-@(i+1)">@Model.Sizes[i]</label>
                             </div>
                         }
 
 
-                        <button type="submit" class="about__form__btn">
-                            <i class="fa fa-shopping-cart" aria-hidden="true">
-                                Добавить в корзину
-                            </i>
-                        </button>
+                        <a href="#" data-id="@Model.Product.Id" id="addCart" class="about__form__btn">Add to cart</a>
+                    
                     </form>
                 </div>
                 <!-- /.prod__about -->

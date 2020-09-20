@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using LaShoopa.Mocks;
 using LaShoopa.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -25,8 +26,15 @@ namespace LaShoopa
         {
             string connection = Configuration.GetConnectionString("DefaultConnection");
             services.AddDbContext<ApplicationContext>(options => options.UseSqlServer(connection));
+
             
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+            services.AddScoped(sp => ShopCart.GetCart(sp));
+
+
             services.AddMvc();
+            services.AddMemoryCache();
+            services.AddSession();
         }
 
         
@@ -39,6 +47,9 @@ namespace LaShoopa
             }
 
             app.UseStaticFiles();
+
+            app.UseSession();
+            
             app.UseRouting();
             app.UseEndpoints(endpoints =>
             {

@@ -1,0 +1,85 @@
+﻿@model LaShoopa.ViewModels.ShopCartViewModel
+<!-- Ordering -->
+
+<section class="ordering">
+    <div class="container">
+        <h2 class="ordering__title">Orderring</h2>
+        <form asp-antiforgery="true" asp-action="Cart" asp-controller="ShopCart" method="post" class="ordering__form">
+
+            <div asp-validation-summary="All"></div>
+            
+            <div class="ordering__item">
+                <span class="ordering__desc">Phone number</span>
+                <input class="ordering__input"
+                       placeholder="+38 (___) __ __" asp-for="@Model.Order.Phone" />
+
+            </div>
+            
+            <div class="ordering__item">
+                <span class="ordering__desc">Name</span>
+                <input asp-for="@Model.Order.Name" class=" ordering__input" />
+
+            </div>
+            
+            <div class="ordering__item">
+                <span class="ordering__desc">Email</span>
+                <input asp-for="@Model.Order.Email" class=" ordering__input" />
+
+            </div>
+            <div class="ordering__item comment">
+                <span class="ordering__desc">Comment</span>
+                <textarea class="ordering__textarea"
+                          name="comment"
+                          cols="30"
+                          rows="10" asp-for="@Model.Order.Comment"></textarea>
+            </div>
+            <div class="ordering__item submit">
+                <span class="ordering__desc submit">@Model.shopCart.listShopItems.Count items worth @Model.shopCart.listShopItems.Sum(el => el.product.Price) grn</span>
+                <button class="ordering__btn">Order</button>
+            </div>
+
+        </form>
+        <!-- /.ordering__form -->
+    </div>
+    <!-- /.container -->
+</section>
+<!-- /.ordering -->
+
+<section class="cart__contents">
+    <div class="container">
+        <h2 class="cart__title">Cart contents</h2>
+        <div class="cart__items">
+            <header class="cart__header">
+                <div id="countOfItems">@Model.shopCart.listShopItems.Count items</div>
+                <div>Costs</div>
+            </header>
+            @foreach(var item in Model.shopCart.listShopItems)
+            {
+                <div class="cart__item">
+                    <div class="cart__item__desc">
+                        <div class="cart__item__img">
+                            <img src="/@Model.ImgUrls[item.product.Id]" alt="" />
+                        </div>
+                        <div class="cart__item__text">
+                            <h3 class="cart__item__type">
+                                @item.product.Name <span>@item.product.Brand</span>
+                            </h3>
+                            <h3 class="cart__item__size">Size: <span>@item.Size</span></h3>
+                        </div>
+                    </div>
+                    <div class="cart__item__costs">
+                        <div class="cart__item__costs__price">@item.product.Price грн</div>
+                        <div class="cart__item__costs__btn">
+                            <a href="#" data-id="@item.product.Id" class="delete__btn">Delete</a>
+                        </div>
+                    </div>
+                </div>
+            }
+            
+            
+        </div>
+        <!-- /.cart__items -->
+    </div>
+    <!-- /.container -->
+</section>
+<!-- /.cart__contents -->

@@ -94,12 +94,18 @@ h6 {
   border: 2px solid #656363;
   border-radius: 18px;
   background: #fff;
-  transition: color 0.2s linear, background 0.2s linear;
+  transition: color 0.2s linear, background 0.2s linear, border-color .2s linear;
 }
 
 .shop__cart__link:hover {
   color: #fff;
   background: #656363;
+}
+
+.shop__cart__link.active{
+    color: #fff;
+    background: #f00;
+    border-color: #f00;
 }
 
 /* Nav */
@@ -299,12 +305,9 @@ h6 {
   background: #65889b;
 }
 
-.product__form {
-  width: 50%;
-}
 
 .product__btn {
-  width: 100%;
+  width: 50%;
   padding: 0;
   display: flex;
   align-items: center;
@@ -314,15 +317,11 @@ h6 {
   height: 25px;
   font-family: "Lato", sans-serif;
   border: none;
-  cursor: pointer;
   text-transform: uppercase;
   font-size: 14px;
   font-weight: 700;
   transition: color 0.2s linear, background 0.2s linear;
-}
-
-.product__btn:focus {
-  outline: none;
+  text-decoration:none;
 }
 
 .product__btn:hover {
@@ -556,23 +555,24 @@ h6 {
 }
 
 .about__form__btn {
-  display: block;
+  display: flex;
   margin-top: 10px;
   height: 40px;
   width: 210px;
   font-size: 16px;
+  text-decoration: none;
   font-family: "Lato", sans-serif;
   color: #656363;
   border: 2px solid #656363;
   border-radius: 5px;
   background-color: #ffffff;
-  cursor: pointer;
   transition: color 0.2s linear, background 0.2s linear;
+  text-align: center;
+  text-transform: uppercase;
+  flex-direction: column;
+  justify-content: center;
 }
 
-.about__form__btn:focus {
-  outline: none;
-}
 
 .about__form__btn:hover {
   color: #fff;
@@ -840,7 +840,7 @@ h6 {
 }
 
 .cart__header div {
-  width: 33.3333%;
+  width: 50%;
   text-align: center;
 }
 
@@ -862,7 +862,7 @@ h6 {
 
 .cart__item__desc {
   display: flex;
-  width: 33.3333%;
+  width: 50%;
   height: 100%;
 }
 
@@ -960,24 +960,54 @@ h6 {
 }
 
 .cart__item__costs {
-  width: 33.3333%;
+  width: 50%;
   font-size: 16px;
   color: #636363;
   font-weight: 600;
   text-align: center;
 }
 
+
+.cart__item__costs__btn{
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.delete__btn {
+    display: flex;
+    align-items: center;
+    align-content: center;
+    justify-content: center;
+    width: 50%;
+    background: #fff;
+    color: #65889b;
+    height: 25px;
+    text-decoration: none;
+    text-transform: uppercase;
+    font-size: 14px;
+    font-weight: 700;
+    transition: color 0.2s linear, background 0.2s linear;
+}
+
+.delete__btn:hover {
+    color: #fff;
+    background: #65889b;
+}
+
+
 /* 404 HTML 
 ========================================
 ========================================
 ======================================== */
-
 .not__found {
-  padding-top: 115px;
-  min-height: 100%;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
+    padding-top: 115px;
+    min-height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
 }
 
 .not__found__text {
@@ -1341,6 +1371,7 @@ h6 {
   }
 
   .about__form__btn {
+      display: block;
     width: 210px;
     font-size: 18px;
     height: 50px;

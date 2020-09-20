@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using LaShoopa.ViewModels;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using LaShoopa.Mocks;
 
 namespace LaShoopa.Controllers
 {
@@ -47,11 +48,22 @@ namespace LaShoopa.Controllers
                 Brands = Brands.GetRange(0, setting.CountBrands);
             }
 
+            Dictionary<int, string> ImgUrls = new Dictionary<int, string>();
+            foreach(var product in PopularProducts)
+            {
+                ImgUrls[product.Id] = JsonSerializer.Deserialize<string[]>(product.ImgUrls).FirstOrDefault();
+            }
+            foreach (var product in LatestProducts)
+            {
+                ImgUrls[product.Id] = JsonSerializer.Deserialize<string[]>(product.ImgUrls).FirstOrDefault();
+            }
+
             IndexViewModel model = new IndexViewModel {
                 PopularProducts = PopularProducts,
                 LatestProducts = LatestProducts,
                 Brands = Brands,
-                IntroBackground = setting.IntroBackgroundUrl
+                IntroBackground = setting.IntroBackgroundUrl,
+                ImgUrls = ImgUrls
             };
             return View(model);
         }
@@ -93,9 +105,9 @@ namespace LaShoopa.Controllers
             int CountOfProducts = Products.Count;
             List<Category> Categ = await db.Categories.ToListAsync();
             Category FillCat = Categ.FirstOrDefault(el => el.Id == categoryId);
-            Categ = Categ.Where(el => Products.Contains(Products.FirstOrDefault(pr => pr.CategoryId == el.Id))).ToList();
+            Categ = Categ.Where(el => Products.Contains(Products.FirstOrDefault(pr => pr.CategoryId == el.Id))).OrderBy(el => el.Name).ToList();
             Dictionary<Category, int> Categories = new Dictionary<Category, int>();
-            foreach(var item in Categ)
+            foreach (var item in Categ)
             {
                 Categories.Add(item, Products.Where(el => el.CategoryId == item.Id).Count());
             }
@@ -104,13 +116,19 @@ namespace LaShoopa.Controllers
                 Products = Products.Where(el => el.CategoryId == categoryId).ToList();
             }
             int countProductsOnPage = (int)Math.Ceiling((double)Products.Count / setting.CountProductsOnPage);
-            if (Products.Count > setting.CountProductsOnPage*pageId)
+            if (Products.Count > setting.CountProductsOnPage * pageId)
             {
-                Products = Products.GetRange(setting.CountProductsOnPage * (pageId-1), setting.CountProductsOnPage);
+                Products = Products.GetRange(setting.CountProductsOnPage * (pageId - 1), setting.CountProductsOnPage);
             }
             else
             {
                 Products = Products.GetRange(setting.CountProductsOnPage * (pageId - 1), Products.Count - setting.CountProductsOnPage * (pageId - 1));
+            }
+
+            Dictionary<int, string> ImgUrls = new Dictionary<int, string>();
+            foreach (var product in Products)
+            {
+                ImgUrls[product.Id] = JsonSerializer.Deserialize<string[]>(product.ImgUrls).FirstOrDefault();
             }
             
 
@@ -124,7 +142,8 @@ namespace LaShoopa.Controllers
                 genderId = genderId,
                 pageId = pageId,
                 categoryId = categoryId,
-                brandId = brandId
+                brandId = brandId,
+                ImgUrls = ImgUrls
             };
 
             return View(model);
