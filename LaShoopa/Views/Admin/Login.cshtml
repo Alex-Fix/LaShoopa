@@ -1,0 +1,39 @@
+﻿@model LaShoopa.ViewModels.LoginViewModel
+@{ 
+    Layout = null;
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon"
+          href="~/favicon.ico"
+          type="image/x-icon" />
+    <link rel="stylesheet" href="~/css/style.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap"
+          rel="stylesheet" />
+    <title>La Shoopa</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.2/jquery.validate.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/3.2.11/jquery.validate.unobtrusive.min.js"></script>
+</head>
+<body>
+    <div class="wrapper">
+        <div class="login">
+            <form class="login__form" asp-antiforgery="true" method="post" asp-action="Login" asp-controller="Admin">
+                <div asp-validation-summary="All"></div>
+                <div class="login__item">
+                    <span class="login__desc">Login</span>
+                    <input type="text" class="login__input" asp-for="Login">
+                </div>
+                <div class="login__item">
+                    <span class="login__desc">Password</span>
+                    <input type="password" class="login__input" asp-for="Password">
+                </div>
+                <button class="login__btn" type="submit">Login</button>
+            </form>
+        </div>
+    </div>
+</body>
+</html>

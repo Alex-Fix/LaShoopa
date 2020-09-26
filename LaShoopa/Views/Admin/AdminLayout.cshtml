@@ -1,0 +1,40 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon"
+          href="~/favicon.ico"
+          type="image/x-icon" />
+    <link rel="stylesheet" href="~/css/style.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap"
+          rel="stylesheet" />
+    <title>La Shoopa</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-ajax-unobtrusive/3.2.6/jquery.unobtrusive-ajax.min.js"></script>
+</head>
+<body>
+    <div class="wrapper">
+        <!-- Header -->
+        <header class="header">
+            <div class="container">
+                <div class="header__inner">
+                    <a asp-controller="Home" asp-action="Index" class="header__logo">La Shoopa</a>
+                    <nav class="nav">
+                        <a class="nav__link">All Products</a>
+                        <a class="nav__link">Add Product</a>
+                        <a class="nav__link">Settings</a>
+                        <a class="nav__link">Orders</a>
+                    </nav>
+                </div>
+                <!-- /header__inner -->
+            </div>
+            <!-- /.container -->
+        </header>
+        <!-- /.header -->
+        
+        @RenderBody();
+
+    </div>
+</body>
+</html>
