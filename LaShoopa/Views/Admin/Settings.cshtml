@@ -1,0 +1,31 @@
+﻿@{ 
+    Layout = "~/Views/Admin/AdminLayout.cshtml";
+}
+@model LaShoopa.ViewModels.SettingsViewModel
+
+<div class="settings">
+    <form class="settings__form" asp-antiforgery="true" method="post" asp-controller="Admin" asp-action="Settings" enctype="multipart/form-data">
+        <div asp-validation-summary="All"></div>
+        <div class="settings__item">
+            <span class="settings__desc">Count of popular products</span>
+            <input type="number" class="settings__input" asp-for="Settings.CountPopularProducts">
+        </div>
+        <div class="settings__item">
+            <span class="settings__desc">Count of latest products</span>
+            <input type="number" class="settings__input" asp-for="Settings.CountLatestProducts">
+        </div>
+        <div class="settings__item">
+            <span class="settings__desc">Count of brands</span>
+            <input type="number" class="settings__input" asp-for="Settings.CountBrands">
+        </div>
+        <div class="settings__item">
+            <span class="settings__desc">Count of products on page</span>
+            <input type="number" class="settings__input" asp-for="Settings.CountProductsOnPage">
+        </div>
+        <div class="settings__item">
+            <span class="settings__desc">Background image (.jpg, .jpeg, .png)</span>
+            <input type="file" class="settings__input" asp-for="Img">
+        </div>
+        <button class="settings__btn" type="submit">Save</button>
+    </form>
+</div>

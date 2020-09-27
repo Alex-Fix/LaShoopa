@@ -21,9 +21,9 @@
                 <div class="header__inner">
                     <a asp-controller="Home" asp-action="Index" class="header__logo">La Shoopa</a>
                     <nav class="nav">
-                        <a class="nav__link">All Products</a>
+                        <a class="nav__link" asp-controller="Admin" asp-action="ProductsPage">All Products</a>
                         <a class="nav__link">Add Product</a>
-                        <a class="nav__link">Settings</a>
+                        <a class="nav__link" asp-action="Settings" asp-controller="Admin">Settings</a>
                         <a class="nav__link">Orders</a>
                     </nav>
                 </div>

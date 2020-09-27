@@ -1,3 +1,42 @@
 ﻿@{ 
     Layout = "~/Views/Admin/AdminLayout.cshtml";
 }
+@model LaShoopa.ViewModels.ProductsPageViewModel
+
+<div class="products__page__items">
+    @foreach (var item in Model.Products)
+    {
+    <div class="products__page__item">
+        <div class="products__page__img">
+            <img src="/@Model.ImgUrls[item.Id]" alt="">
+        </div>
+
+        <div class="products__page__desc">
+            <div>Id: @item.Id</div>
+            <div>Name: @item.Name</div>
+            <div>Price: @item.Price</div>
+            <div>IsPopular: @item.IsPopular</div>
+            <div>Sizes: @item.Sizes</div>
+            <div>Country: @item.Country</div>
+            <div>Composition: @item.Composition</div>
+            <div>ImgUrls: @item.ImgUrls</div>
+            <div>BrandId: @item.BrandId</div>
+            <div>Brand: @Model.Brands[item.BrandId].Name</div>
+            <div>CategoryId: @item.CategoryId</div>
+            <div>Category: @Model.Categories[item.CategoryId].Name</div>
+            <div>GenderId: @item.GenderId</div>
+            <div>Gender: @Model.Genders[item.GenderId].Name</div>
+            <div>Description: @item.Description</div>
+        </div>
+
+        <nav class="products__page__nav">
+            <a href="#" class="products__page__link">Change</a>
+            <a class="products__page__link del__btn"  data-id="@item.Id">Delete</a>
+        </nav>
+
+    </div>
+    }
+
+</div>
+
+<script src="~/js/productsPage.js"></script>
