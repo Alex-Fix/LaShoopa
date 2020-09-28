@@ -9,7 +9,7 @@ namespace LaShoopa.ViewModels
 {
     public class SettingsViewModel
     {
-        public AppSettings Settings { get; set; }
+        public AppSetting Settings { get; set; }
         public IFormFile Img { get; set; }
     }
 }

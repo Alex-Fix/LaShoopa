@@ -11,6 +11,7 @@ using System.IO;
 using System.Linq;
 using System.Text.Json;
 using System.Threading.Tasks;
+using LaShoopa.Mocks;
 
 namespace LaShoopa.Controllers
 {
@@ -116,7 +117,7 @@ namespace LaShoopa.Controllers
             {
                 model.Img.CopyTo(fileStream);
             }
-            AppSettings settings = new AppSettings
+            AppSetting settings = new AppSetting
             {
                 CountBrands = model.Settings.CountBrands,
                 CountLatestProducts = model.Settings.CountLatestProducts,
@@ -159,20 +160,16 @@ namespace LaShoopa.Controllers
             return View(model);
         }
 
-        public async void DelFromDb(int id)
+        public  void DelFromDb(int id)
         {
             if (LoggedIn())
             {
                 Product product = _db.Products.Where(el => el.Id == id).FirstOrDefault();
                 if(product!= null)
                 {
-                    product.Category = _db.Categories.Where(el => el.Id == id).FirstOrDefault();
                     _db.Products.Remove(product);
-                    _db.Categories.Where(el => el.Id == product.CategoryId).FirstOrDefault().Products.Remove(product);
-                    _db.Brands.Where(el => el.Id == product.BrandId).FirstOrDefault().Products.Remove(product);
-                    _db.Genders.Where(el => el.Id == product.GenderId).FirstOrDefault().Products.Remove(product);
-                    await _db.SaveChangesAsync();
-                }
+                    _db.SaveChanges();
+                } 
             }
         }
     }

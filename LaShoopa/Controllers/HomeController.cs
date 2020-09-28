@@ -19,11 +19,12 @@ namespace LaShoopa.Controllers
         public HomeController(ApplicationContext db)
         {
             this.db = db;
+
         }
 
         public async Task<IActionResult> Index()
         {
-            AppSettings setting = db.AppSettings.ToList().LastOrDefault(); 
+            AppSetting setting = db.AppSettings.ToList().LastOrDefault(); 
             List<Product> Products = await db.Products.ToListAsync();
 
             List<Product> PopularProducts = Products.Where(el => el.IsPopular).ToList();
@@ -91,7 +92,7 @@ namespace LaShoopa.Controllers
 
         public async Task<IActionResult> Clothes(int genderId = 0, int categoryId = 0, int pageId = 1, int brandId = 0)
         {
-            AppSettings setting = db.AppSettings.ToList().LastOrDefault();
+            AppSetting setting = db.AppSettings.ToList().LastOrDefault();
 
             List<Product> Products = await db.Products.ToListAsync();
             if (brandId != 0)

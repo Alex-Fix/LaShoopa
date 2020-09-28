@@ -22,7 +22,15 @@ namespace LaShoopa.Mocks
 
         public void FillDB()
         {
-            
+            AppSetting setting = new AppSetting
+            {
+                CountBrands = 5,
+                CountLatestProducts = 15,
+                CountPopularProducts = 15,
+                CountProductsOnPage= 15,
+                IntroBackgroundUrl = "img/intro__background.jpeg"
+            };
+            _db.AppSettings.Add(setting);
             List<Gender> Genders = new List<Gender>
             {
                 new Gender
