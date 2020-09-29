@@ -1,0 +1,101 @@
+﻿@{
+    Layout = "~/Views/Admin/AdminLayout.cshtml";
+}
+@model LaShoopa.ViewModels.AddProductsViewModel
+
+
+<div class="add__product">
+    <div class="container">
+
+        <form asp-controller="Admin" asp-antiforgery="true" asp-action="AddProduct" method="post" enctype="multipart/form-data" class="add__product__form">
+            <div asp-validation-summary="All"></div>
+            <div class="add__product__item">
+                <span class="add__product__desc">Name: </span>
+                <input type="text" class="add__product__input" asp-for="Product.Name">
+            </div>
+            <div class="add__product__item">
+                <span class="add__product__desc">Price: </span>
+                <input type="number" class="add__product__input" asp-for="Product.Price">
+            </div>
+            <div class="add__product__item">
+                <span class="add__product__desc">IsPopular: </span>
+                <input type="checkbox" class="add__product__input" asp-for="Product.IsPopular">
+            </div>
+            <div class="add__product__item">
+                <span class="add__product__desc">Sizes: </span>
+                <input type="text" class="add__product__input" asp-for="Sizes">
+                <a class="add__product__add__link" id="addSize">Add Size</a>
+            </div>
+            <div class="add__product__item">
+                <span class="add__product__desc">Country: </span>
+                <input type="text" class="add__product__input" asp-for="Product.Country">
+            </div>
+            <div class="add__product__item">
+                <span class="add__product__desc">Composition: </span>
+                <input type="text" class="add__product__input" asp-for="Product.Composition">
+            </div>
+            <div class="add__product__item">
+                <span class="add__product__desc">Description: </span>
+                <textarea class="add__product__input" cols="100" rows="5" asp-for="Product.Description"></textarea>
+            </div>
+            <div class="add__product__item">
+                <span class="add__product__desc">Images: </span>
+                <input type="file" class="add__product__input" asp-for="ProductImgs">
+                <a class="add__product__add__link" id="addImg">Add Img</a>
+
+                <script>
+                    $(function () {
+                        $("#addImg").on("click", function (event) {
+                            event.preventDefault();
+                            $(this).before("<input type=\"file\" class=\"add__product__input\"  name=\"ProductImgs\">");
+                        });
+                        $('#addSize').on("click", function (event) {
+                            event.preventDefault();
+                            $(this).before("<input type=\"text\" class=\"add__product__input\" name=\"Sizes\" value=\"\">");
+                        });
+                    });
+                </script>
+            </div>
+            <div class="add__product__item">
+                <span class="add__product__desc">Brand: </span>
+                <select asp-for="SelectedBrand.Id">
+                    <option value="-1">New Brand</option>
+                    @foreach (var item in Model.Brands)
+                    {
+                        <option value="@item.Id">@item.Name</option>
+                    }
+                </select>
+                <span class="add__product__desc">Brand Name: </span>
+                <input type="text" class="add__product__input" asp-for="NewBrand.Name">
+                <span class="add__product__desc">Brand Img: </span>
+                <input type="file" class="add__product__input" asp-for="BrandImg">
+            </div>
+            <div class="add__product__item">
+                <span class="add__product__desc">Category: </span>
+                <select asp-for="SelectedCategory.Id">
+                    <option value="-1">New Category</option>
+                    @foreach (var item in Model.Categories)
+                    {
+                        <option value="@item.Id">@item.Name</option>
+                    }
+                </select>
+                <span class="add__product__desc">Category Name: </span>
+                <input type="text" class="add__product__input" asp-for="NewCategory.Name">
+            </div>
+            <div class="add__product__item">
+                <span class="add__product__desc">Gender: </span>
+                <select asp-for="SelectedGender.Id">
+                    <option value="-1">New Gender</option>
+                    @foreach (var item in Model.Genders)
+                    {
+                        <option value="@item.Id">@item.Name</option>
+                    }
+                </select>
+                <span class="add__product__desc">Gender Name: </span>
+                <input type="text" class="add__product__input" asp-for="NewGender.Name">
+            </div>
+            <button class="add__product__btn" type="submit">Add product</button>
+        </form>
+
+    </div><!--/.container-->
+</div><!--/.add__product-->

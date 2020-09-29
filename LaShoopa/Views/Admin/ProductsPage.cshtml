@@ -4,6 +4,8 @@
 @model LaShoopa.ViewModels.ProductsPageViewModel
 
 <div class="products__page__items">
+    
+
     @foreach (var item in Model.Products)
     {
     <div class="products__page__item">
@@ -30,7 +32,6 @@
         </div>
 
         <nav class="products__page__nav">
-            <a href="#" class="products__page__link">Change</a>
             <a class="products__page__link del__btn"  data-id="@item.Id">Delete</a>
         </nav>
 

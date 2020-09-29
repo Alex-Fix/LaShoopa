@@ -167,11 +167,79 @@ namespace LaShoopa.Controllers
                 Product product = _db.Products.Where(el => el.Id == id).FirstOrDefault();
                 if(product!= null)
                 {
+                    if(_db.Products.Where(el => el.CategoryId == product.CategoryId).Count() == 1)
+                    {
+                        Category category = _db.Categories.FirstOrDefault(el => el.Id == product.CategoryId);
+                        if (category != null)
+                        {
+                            _db.Categories.Remove(category);
+                        }
+                    }
+                    if (_db.Products.Where(el => el.BrandId == product.BrandId).Count() == 1)
+                    {
+                        Brand brand = _db.Brands.FirstOrDefault(el => el.Id == product.BrandId);
+                        if (brand != null && !string.IsNullOrWhiteSpace(brand.ImgUrl))
+                        {                            
+                           System.IO.File.Delete($"wwwroot/{brand.ImgUrl}");
+                        }
+                    }
+                    if (_db.Products.Where(el => el.GenderId == product.GenderId).Count() == 1)
+                    {
+                        Gender gender = _db.Genders.FirstOrDefault(el => el.Id == product.GenderId);
+                        if (gender != null)
+                        {
+                            _db.Genders.Remove(gender);
+                        }
+                    }
+                    if (!string.IsNullOrWhiteSpace(product.ImgUrls))
+                    {
+                        string[] ImgUrls = JsonSerializer.Deserialize<string[]>(product.ImgUrls);
+                        foreach(var item in ImgUrls)
+                        {
+                            System.IO.File.Delete($"wwwroot/{item}");
+                        }
+                    }
                     _db.Products.Remove(product);
                     _db.SaveChanges();
-                } 
+                }
             }
         }
+
+        [HttpGet]
+        public async Task<IActionResult> AddProduct()
+        {
+            if (!LoggedIn())
+            {
+                return RedirectToAction("Login");
+            }
+            List<Brand> brands = await _db.Brands.ToListAsync();
+            List<Category> categories = await _db.Categories.ToListAsync();
+            List<Gender> genders = await _db.Genders.ToListAsync();
+            AddProductsViewModel model = new AddProductsViewModel
+            {
+                Brands = brands,
+                Categories = categories,
+                Genders = genders
+            };
+            return View(model);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult AddProduct(AddProductsViewModel model)
+        {
+            if (!LoggedIn())
+            {
+                return RedirectToAction("Login");
+            }
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+
+            return RedirectToAction("ProductsPage");
+        }
+
     }
 
 }
