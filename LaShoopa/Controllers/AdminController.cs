@@ -212,9 +212,9 @@ namespace LaShoopa.Controllers
             {
                 return RedirectToAction("Login");
             }
-            List<Brand> brands = await _db.Brands.ToListAsync();
-            List<Category> categories = await _db.Categories.ToListAsync();
-            List<Gender> genders = await _db.Genders.ToListAsync();
+            List<Brand> brands = await _db.Brands.OrderBy(el => el.Name).ToListAsync();
+            List<Category> categories = await _db.Categories.OrderBy(el => el.Name).ToListAsync();
+            List<Gender> genders = await _db.Genders.OrderBy(el => el.Name).ToListAsync();
             AddProductsViewModel model = new AddProductsViewModel
             {
                 Brands = brands,
@@ -226,16 +226,175 @@ namespace LaShoopa.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult AddProduct(AddProductsViewModel model)
+        public async Task<IActionResult> AddProduct(AddProductsViewModel model)
         {
             if (!LoggedIn())
             {
                 return RedirectToAction("Login");
             }
+
+            if (string.IsNullOrWhiteSpace(model.Product.Name))
+            {
+                ModelState.AddModelError("", "Name is null or white space");
+            }
+            if (model.Product.Price < 0)
+            {
+                ModelState.AddModelError("", "Price must be greater than 0");
+            }
+
+            List<string> Sizes = new List<string>();
+            if(model.Sizes != null)
+            {
+                foreach(var item in model.Sizes)
+                {
+                    if (!string.IsNullOrWhiteSpace(item))
+                    {
+                        Sizes.Add(item); 
+                    }
+                }
+            }
+
+            List<IFormFile> ProductImgs = new List<IFormFile>();
+            if (model.ProductImgs == null || model.ProductImgs.Count == 0)
+            {
+                ModelState.AddModelError("", "Product imgs is null or empty");
+            }
+            else
+            {
+                foreach (var item in model.ProductImgs)
+                {
+                    if (item.FileName.Contains(".jpg") || item.FileName.Contains(".jpeg") || item.FileName.Contains(".png"))
+                    {
+                        ProductImgs.Add(item);
+                    }
+                }
+                if (ProductImgs.Count() == 0)
+                {
+                    ModelState.AddModelError("", "Product imgs is empty");
+                }
+            }
+            
+
+            if(model.SelectedBrand.Id == -1 && string.IsNullOrWhiteSpace(model.NewBrand.Name))
+            {
+                ModelState.AddModelError("", "You have not entered a brand name");
+                if(model.BrandImg!=null && !(model.BrandImg.FileName.Contains(".jpg") || model.BrandImg.FileName.Contains(".jpeg") || model.BrandImg.FileName.Contains(".png")))
+                {
+                    ModelState.AddModelError("", "Brand img isn`t valid");
+                }  
+            }
+
+            if (model.SelectedCategory.Id == -1 && string.IsNullOrWhiteSpace(model.NewCategory.Name))
+            {
+                ModelState.AddModelError("", "You have not entered a category name");
+            }
+
+            if (model.SelectedGender.Id == -1 && string.IsNullOrWhiteSpace(model.NewGender.Name))
+            {
+                ModelState.AddModelError("", "You have not entered a gender name");
+            }
+
             if (!ModelState.IsValid)
             {
+                List<Brand> brands = await _db.Brands.OrderBy(el => el.Name).ToListAsync();
+                List<Category> categories = await _db.Categories.OrderBy(el => el.Name).ToListAsync();
+                List<Gender> genders = await _db.Genders.OrderBy(el => el.Name).ToListAsync();
+                model.Brands = brands;
+                model.Categories = categories;
+                model.Genders = genders;
                 return View(model);
             }
+
+
+            Brand brand;
+            if(model.SelectedBrand.Id == -1)
+            {
+                brand = new Brand();
+                brand.Name = model.NewBrand.Name;
+                if(model.BrandImg != null)
+                {
+                    string path = "/img/Brands/" + model.BrandImg.FileName;
+                    using (var fileStream = new FileStream(_appEnvironment.WebRootPath + path, FileMode.Create))
+                    {
+                        model.BrandImg.CopyTo(fileStream);
+                    }
+                    brand.ImgUrl = "img/Brands/"+model.BrandImg.FileName;
+                    _db.Brands.Add(brand);
+                    _db.SaveChanges();
+                    brand = _db.Brands.FirstOrDefault(el => el.Name.Equals(brand.Name));
+                }
+            }
+            else
+            {
+                brand = _db.Brands.FirstOrDefault(el => el.Id == model.SelectedBrand.Id);
+            }
+
+            Category category;
+            if(model.SelectedCategory.Id == -1)
+            {
+                category = new Category();
+                category.Name = model.NewCategory.Name;
+                _db.Categories.Add(category);
+                _db.SaveChanges();
+                category = _db.Categories.FirstOrDefault(el => el.Name.Equals(category.Name));
+            }
+            else
+            {
+                category = _db.Categories.FirstOrDefault(el => el.Id == model.SelectedCategory.Id);
+            }
+
+            Gender gender;
+            if (model.SelectedGender.Id == -1)
+            {
+                gender = new Gender();
+                gender.Name = model.NewGender.Name;
+                _db.Genders.Add(gender);
+                _db.SaveChanges();
+                gender = _db.Genders.FirstOrDefault(el => el.Name.Equals(gender.Name));
+            }
+            else
+            {
+                gender = _db.Genders.FirstOrDefault(el => el.Id == model.SelectedGender.Id);
+            }
+
+
+            Product product = new Product();
+            product.Name = model.Product.Name;
+            product.Price = model.Product.Price;
+            string[] ImgUrls = new string[ProductImgs.Count()];
+            for(int i = 0; i< ProductImgs.Count(); i++)
+            {
+                string path = "/img/Products/" + ProductImgs[i].FileName;
+                using (var fileStream = new FileStream(_appEnvironment.WebRootPath + path, FileMode.Create))
+                {
+                    ProductImgs[i].CopyTo(fileStream);
+                }
+                ImgUrls[i] = "img/Products/" + ProductImgs[i].FileName;
+            }
+            product.ImgUrls = JsonSerializer.Serialize<string[]>(ImgUrls);
+            product.IsPopular = model.Product.IsPopular;
+            product.Sizes = JsonSerializer.Serialize<string[]>(Sizes.ToArray());
+            if (!string.IsNullOrWhiteSpace(model.Product.Country))
+            {
+                product.Country = model.Product.Country;
+            }
+            if (!string.IsNullOrWhiteSpace(model.Product.Composition))
+            {
+                product.Composition = model.Product.Composition;
+            }
+            if (!string.IsNullOrWhiteSpace(model.Product.Description))
+            {
+                product.Description = model.Product.Description;
+            }
+            product.Brand = brand;
+            product.BrandId = brand.Id;
+            product.Gender = gender;
+            product.GenderId = gender.Id;
+            product.Category = category;
+            product.CategoryId = category.Id;
+
+            _db.Products.Add(product);
+            _db.SaveChanges();
 
             return RedirectToAction("ProductsPage");
         }

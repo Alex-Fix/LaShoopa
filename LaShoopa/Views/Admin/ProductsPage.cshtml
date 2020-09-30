@@ -6,33 +6,33 @@
 <div class="products__page__items">
     
 
-    @foreach (var item in Model.Products)
+    @for(int i = Model.Products.Count()-1; i>=0; i--)
     {
     <div class="products__page__item">
         <div class="products__page__img">
-            <img src="/@Model.ImgUrls[item.Id]" alt="">
+            <img src="/@Model.ImgUrls[Model.Products[i].Id]" alt="">
         </div>
 
         <div class="products__page__desc">
-            <div>Id: @item.Id</div>
-            <div>Name: @item.Name</div>
-            <div>Price: @item.Price</div>
-            <div>IsPopular: @item.IsPopular</div>
-            <div>Sizes: @item.Sizes</div>
-            <div>Country: @item.Country</div>
-            <div>Composition: @item.Composition</div>
-            <div>ImgUrls: @item.ImgUrls</div>
-            <div>BrandId: @item.BrandId</div>
-            <div>Brand: @Model.Brands[item.BrandId].Name</div>
-            <div>CategoryId: @item.CategoryId</div>
-            <div>Category: @Model.Categories[item.CategoryId].Name</div>
-            <div>GenderId: @item.GenderId</div>
-            <div>Gender: @Model.Genders[item.GenderId].Name</div>
-            <div>Description: @item.Description</div>
+            <div>Id: @Model.Products[i].Id</div>
+            <div>Name: @Model.Products[i].Name</div>
+            <div>Price: @Model.Products[i].Price</div>
+            <div>IsPopular: @Model.Products[i].IsPopular</div>
+            <div>Sizes: @Model.Products[i].Sizes</div>
+            <div>Country: @Model.Products[i].Country</div>
+            <div>Composition: @Model.Products[i].Composition</div>
+            <div>ImgUrls: @Model.Products[i].ImgUrls</div>
+            <div>BrandId: @Model.Products[i].BrandId</div>
+            <div>Brand: @Model.Brands[Model.Products[i].BrandId].Name</div>
+            <div>CategoryId: @Model.Products[i].CategoryId</div>
+            <div>Category: @Model.Categories[Model.Products[i].CategoryId].Name</div>
+            <div>GenderId: @Model.Products[i].GenderId</div>
+            <div>Gender: @Model.Genders[Model.Products[i].GenderId].Name</div>
+            <div>Description: @Model.Products[i].Description</div>
         </div>
 
         <nav class="products__page__nav">
-            <a class="products__page__link del__btn"  data-id="@item.Id">Delete</a>
+            <a class="products__page__link del__btn"  data-id="@Model.Products[i].Id">Delete</a>
         </nav>
 
     </div>
