@@ -399,6 +399,101 @@ namespace LaShoopa.Controllers
             return RedirectToAction("ProductsPage");
         }
 
+        public async Task<IActionResult> Orders()
+        {
+            if (!LoggedIn())
+            {
+                return RedirectToAction("Login");
+            }
+            List<Order> Orders = await _db.Orders.OrderByDescending(el => el.Id).ToListAsync();
+            Dictionary<int, List<Product>> Products = new Dictionary<int, List<Product>>();
+            Dictionary<int, Dictionary<int, string>> Sizes = new Dictionary<int, Dictionary<int, string>>();
+            Dictionary<int, string> ImgUrls = new Dictionary<int, string>();
+            Dictionary<int, string> Brands = new Dictionary<int, string>();
+            Dictionary<int, string> Categories = new Dictionary<int, string>();
+            Dictionary<int, string> Genders = new Dictionary<int, string>();
+            foreach(var item in Orders)
+            {
+                List<Product> OrderProducts = new List<Product>();
+                List<OrderSize> OrderSizes = JsonSerializer.Deserialize<List<OrderSize>>(item.ProductsSizes);
+                int[] productsId = JsonSerializer.Deserialize<int[]>(item.Products);
+                Sizes[item.Id] = new Dictionary<int, string>();
+                foreach(var el in productsId)
+                {
+                    Product product = await _db.Products.FirstOrDefaultAsync(p => p.Id == el);
+                    
+                    if (product != null)
+                    {
+                        Brand brand = _db.Brands.FirstOrDefault(p => p.Id == product.BrandId);
+                        Category category = _db.Categories.FirstOrDefault(p => p.Id == product.CategoryId);
+                        Gender gender = _db.Genders.FirstOrDefault(p => p.Id == product.GenderId);
+                        ImgUrls[el] = JsonSerializer.Deserialize<string[]>(product.ImgUrls).FirstOrDefault();
+                        OrderProducts.Add(product);
+                        OrderSize orderSize = OrderSizes.FirstOrDefault(p => p.ProductId == el);
+                        if (orderSize != null)
+                        {
+
+                            Sizes[item.Id][el] = orderSize.ProductSize;
+                            OrderSizes.Remove(orderSize);
+                        }
+                        if (brand != null)
+                        {
+                            Brands[el] = brand.Name;
+                        }
+                        else
+                        {
+                            Brands[el] = "";
+                        }
+                        if (category != null)
+                        {
+                            Categories[el] = category.Name;
+                        }
+                        else
+                        {
+                            Categories[el] = "";
+                        }
+                        if (gender != null)
+                        {
+                            Genders[el] = gender.Name;
+                        }
+                        else
+                        {
+                            Genders[el] = "";
+                        }
+                    }
+                }
+                Products[item.Id] = OrderProducts;
+            }
+
+
+            OrderViewModel model = new OrderViewModel
+            {
+                Orders = Orders,
+                Products = Products,
+                ImgUrls = ImgUrls,
+                Sizes = Sizes,
+                Brands = Brands,
+                Genders = Genders,
+                Categories = Categories
+            };
+
+
+            return View(model);
+        }
+
+        public void DelOrderFromDb(int id)
+        {
+            if (!LoggedIn())
+            {
+                return;
+            }
+            Order order = _db.Orders.FirstOrDefault(el => el.Id == id);
+            if (order != null)
+            {
+                _db.Orders.Remove(order);
+                _db.SaveChanges();
+            }
+        }
     }
 
 }

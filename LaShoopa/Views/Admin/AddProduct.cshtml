@@ -43,18 +43,7 @@
                 <input type="file" class="add__product__input" asp-for="ProductImgs">
                 <a class="add__product__add__link" id="addImg">Add Img</a>
 
-                <script>
-                    $(function () {
-                        $("#addImg").on("click", function (event) {
-                            event.preventDefault();
-                            $(this).before("<input type=\"file\" class=\"add__product__input\"  name=\"ProductImgs\">");
-                        });
-                        $('#addSize').on("click", function (event) {
-                            event.preventDefault();
-                            $(this).before("<input type=\"text\" class=\"add__product__input\" name=\"Sizes\" value=\"\">");
-                        });
-                    });
-                </script>
+                
             </div>
             <div class="add__product__item">
                 <span class="add__product__desc">Brand: </span>
@@ -99,3 +88,5 @@
 
     </div><!--/.container-->
 </div><!--/.add__product-->
+
+<script src="~/js/addProduct.js"></script>

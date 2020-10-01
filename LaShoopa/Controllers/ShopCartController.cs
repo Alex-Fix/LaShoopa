@@ -53,17 +53,21 @@ namespace LaShoopa.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Cart(ShopCartViewModel model)
         {
+            if (_shopCart.GetShopItems().Count()==0)
+            {
+                ModelState.AddModelError("","Add more products");
+            }
             if (ModelState.IsValid)
             {
                 Order order = model.Order;
                 order.Products = JsonSerializer.Serialize<int[]>(_shopCart.GetShopItems().Select(el => el.product.Id).ToArray());
                 order.Price = _shopCart.GetShopItems().Sum(el => el.product.Price);
-                Dictionary<string, string> Sizes = new Dictionary<string, string>();
+                List<OrderSize> sizes = new List<OrderSize>();
                 foreach(var item in _shopCart.GetShopItems())
                 {
-                    Sizes[item.product.Id.ToString()] = item.Size;
+                    sizes.Add(new OrderSize { ProductId = item.product.Id, ProductSize = item.Size });
                 }
-                order.ProductsSizes = JsonSerializer.Serialize<Dictionary<string, string>>(Sizes);
+                order.ProductsSizes = JsonSerializer.Serialize<List<OrderSize>>(sizes);
                 _db.Orders.Add(order);
                 _db.SaveChanges();
                 _shopCart = ShopCart.CreateNewCart(_service);

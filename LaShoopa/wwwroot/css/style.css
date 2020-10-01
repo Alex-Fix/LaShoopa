@@ -1400,6 +1400,101 @@ h6 {
         color: #fff;
     }
 
+/* Orders Page HTML
+  =============================
+  =============================
+  ============================= */
+
+.orders {
+    margin-top: 115px;
+}
+
+.order__items {
+    width: 100%;
+    height: 100%;
+}
+
+.orders__item {
+    display: flex;
+    border-bottom: 2px solid #636363;
+    width: 100%;
+}
+
+.orders__item__head {
+    padding: 10px;
+    width: 30%;
+    border-right: 2px solid #636363;
+}
+
+    .orders__item__head div {
+        margin: 10px;
+    }
+
+.orders__page__nav {
+    width: 100%;
+}
+
+.orders__page__link {
+    display: flex;
+    font-family: "Lato", sans-serif;
+    text-align: center;
+    justify-content: center;
+    flex-direction: column;
+    width: 50%;
+    height: 40px;
+    border-radius: 20px;
+    border: 2px solid #65889b;
+    color: #65889b;
+    background-color: #fff;
+    text-decoration: none;
+    font-weight: 700;
+    transition: color 0.2s linear, background-color 0.2s linear;
+}
+
+    .orders__page__link:hover {
+        color: #fff;
+        background-color: #65889b;
+    }
+
+.orders__item__products {
+    width: 70%;
+}
+
+.orders__item__product {
+    padding: 10px;
+    display: flex;
+    width: 100%;
+    border-bottom: 2px solid #636363;
+}
+
+    .orders__item__product:last-child {
+        border: 0;
+    }
+
+.orders__product__img {
+    max-height: 200px;
+    max-width: 30%;
+    margin: 10px;
+}
+
+    .orders__product__img img {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        max-height: 200px;
+        max-width: 100%;
+    }
+
+.order__product__desc {
+    display: flex;
+    flex-wrap: wrap;
+    margin-left: 30px;
+}
+
+    .order__product__desc div {
+        width: 33.3333%;
+    }
+
 /* Media 
 ===================================================== */
 @media (max-width: 960px) {

@@ -1,0 +1,57 @@
+﻿@{
+    Layout = "~/Views/Admin/AdminLayout.cshtml";
+}
+
+@model LaShoopa.ViewModels.OrderViewModel
+
+<div class="orders">
+    <div class="orders__items">
+        @foreach (var item in Model.Orders)
+        {
+            <div class="orders__item">
+                <div class="orders__item__head">
+                    <div>Order Id: @item.Id</div>
+                    <div>Phone: @item.Phone</div>
+                    <div>Name: @item.Name</div>
+                    <div>Email: @item.Email</div>
+                    <div>Price: @item.Price ₴</div>
+                    <div>Comment: @item.Comment</div>
+                    <nav class="orders__page__nav">
+                        <a data-id="@item.Id" class="orders__page__link">Delete</a>
+                    </nav>
+                </div>
+                <div class="orders__item__products">
+                    @foreach (var el in Model.Products[item.Id])
+                    {
+
+
+                        <div class="orders__item__product">
+                            <div class="orders__product__img">
+                                <img src="/@Model.ImgUrls[el.Id]" alt="">
+                            </div>
+                            <div class="order__product__desc">
+                                <div>Id: @el.Id</div>
+                                <div>Name: @el.Id</div>
+                                <div>Size: @Model.Sizes[item.Id][el.Id]</div>
+                                <div>Price: @el.Price</div>
+                                <div>Brand: @Model.Brands[el.Id]</div>
+                                <div>Category: @Model.Categories[el.Id]</div>
+                                <div>Gender: @Model.Genders[el.Id]</div>
+                            </div>
+                        </div>
+
+
+                   
+                    }
+
+                </div>
+
+            </div>
+        }
+
+
+
+    </div>
+    <!-- /.orders__items -->
+</div>
+<!--/.orders-->
